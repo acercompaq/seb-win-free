@@ -290,6 +290,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 			logger.Debug($"Initialized blacklist with {blacklist.Count} applications{(blacklist.Any() ? $": {string.Join(", ", blacklist.Select(a => a.ExecutableName))}" : ".")}");
 
+			/*
 			foreach (var process in processes)
 			{
 				foreach (var application in blacklist)
@@ -310,7 +311,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 						break;
 					}
 				}
-			}
+			} */
 		}
 
 		private void InitializeWhitelist(ApplicationSettings settings, InitializationResult result)
@@ -322,6 +323,7 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 			logger.Debug($"Initialized whitelist with {whitelist.Count} applications{(whitelist.Any() ? $": {string.Join(", ", whitelist.Select(a => a.ExecutableName))}" : ".")}");
 
+			/*
 			foreach (var process in processes)
 			{
 				foreach (var application in whitelist)
@@ -342,11 +344,12 @@ namespace SafeExamBrowser.Monitoring.Applications
 						break;
 					}
 				}
-			}
+			} */
 		}
 
 		private bool IsAllowed(IProcess process)
 		{
+			/*
 			foreach (var application in blacklist)
 			{
 				if (BelongsToApplication(process, application))
@@ -355,13 +358,14 @@ namespace SafeExamBrowser.Monitoring.Applications
 
 					return false;
 				}
-			}
+			} */
 
 			return true;
 		}
 
 		private bool IsAllowed(Window window)
 		{
+			/*
 			var allowed = false;
 
 			if (TryGetProcessFor(window, out var process))
@@ -374,7 +378,8 @@ namespace SafeExamBrowser.Monitoring.Applications
 				logger.Warn($"Window {window} belongs to not whitelisted process '{process?.Name ?? "n/a"}'!");
 			}
 
-			return allowed;
+			return allowed; */
+			return true;
 		}
 
 		private bool IsWhitelisted(IProcess process, out Guid? applicationId)

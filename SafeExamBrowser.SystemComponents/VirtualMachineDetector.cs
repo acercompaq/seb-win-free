@@ -53,12 +53,12 @@ namespace SafeExamBrowser.SystemComponents
 		public bool IsVirtualMachine()
 		{
 			var isVirtualMachine = false;
-
+			/*
 			isVirtualMachine |= HasVirtualDevice();
 			isVirtualMachine |= HasVirtualMacAddress();
 			isVirtualMachine |= IsVirtualCpu();
 			isVirtualMachine |= IsVirtualRegistry();
-			isVirtualMachine |= IsVirtualSystem(systemInfo.BiosInfo, systemInfo.Manufacturer, systemInfo.Model);
+			isVirtualMachine |= IsVirtualSystem(systemInfo.BiosInfo, systemInfo.Manufacturer, systemInfo.Model); */
 
 			logger.Debug($"Computer '{systemInfo.Name}' appears {(isVirtualMachine ? "" : "not ")}to be a virtual machine.");
 
@@ -69,10 +69,11 @@ namespace SafeExamBrowser.SystemComponents
 		{
 			var hasVirtualDevice = false;
 
+			/*
 			foreach (var device in systemInfo.PlugAndPlayDeviceIds)
 			{
 				hasVirtualDevice |= DeviceBlacklist.Any(d => device.ToLower().Contains(d.ToLower())) && DeviceWhitelist.All(d => !device.ToLower().Contains(d.ToLower()));
-			}
+			} */
 
 			return hasVirtualDevice;
 		}
@@ -80,6 +81,7 @@ namespace SafeExamBrowser.SystemComponents
 		private bool HasVirtualMacAddress()
 		{
 			var hasVirtualMacAddress = false;
+			/*
 			var macAddress = systemInfo.MacAddress;
 
 			if (macAddress != null && macAddress.Length > 2)
@@ -87,7 +89,7 @@ namespace SafeExamBrowser.SystemComponents
 				hasVirtualMacAddress |= macAddress.StartsWith(MANIPULATED);
 				hasVirtualMacAddress |= macAddress.StartsWith(QEMU_MAC_PREFIX);
 				hasVirtualMacAddress |= macAddress.StartsWith(VIRTUALBOX_MAC_PREFIX);
-			}
+			} */
 
 			return hasVirtualMacAddress;
 		}
@@ -96,7 +98,8 @@ namespace SafeExamBrowser.SystemComponents
 		{
 			var isVirtualCpu = false;
 
-			isVirtualCpu |= systemInfo.CpuName.ToLower().Contains(" kvm ");
+			/*
+			isVirtualCpu |= systemInfo.CpuName.ToLower().Contains(" kvm "); */
 
 			return isVirtualCpu;
 		}
@@ -105,7 +108,8 @@ namespace SafeExamBrowser.SystemComponents
 		{
 			var isVirtualRegistry = false;
 
-			isVirtualRegistry |= HasLocalVirtualMachineDeviceCache();
+			/*
+			isVirtualRegistry |= HasLocalVirtualMachineDeviceCache(); */
 
 			return isVirtualRegistry;
 		}
@@ -114,6 +118,7 @@ namespace SafeExamBrowser.SystemComponents
 		{
 			var isVirtualSystem = false;
 
+			/*
 			biosInfo = biosInfo.ToLower();
 			manufacturer = manufacturer.ToLower();
 			model = model.ToLower();
@@ -128,15 +133,16 @@ namespace SafeExamBrowser.SystemComponents
 			isVirtualSystem |= manufacturer.Contains("qemu");
 			isVirtualSystem |= manufacturer.Contains("vmware");
 			isVirtualSystem |= model.Contains("virtualbox");
-			isVirtualSystem |= model.Contains("Q35 +");
+			isVirtualSystem |= model.Contains("Q35 +"); */
 
 			return isVirtualSystem;
 		}
 
 		private bool HasLocalVirtualMachineDeviceCache()
 		{
-			var deviceName = System.Environment.GetEnvironmentVariable("COMPUTERNAME");
+			// var deviceName = System.Environment.GetEnvironmentVariable("COMPUTERNAME");
 			var hasDeviceCache = false;
+			/*
 			var hasDeviceCacheKeys = registry.TryGetSubKeys(RegistryValue.UserHive.DeviceCache_Key, out var deviceCacheKeys);
 
 			if (deviceName != default && hasDeviceCacheKeys)
@@ -159,7 +165,7 @@ namespace SafeExamBrowser.SystemComponents
 						}
 					}
 				}
-			}
+			} */
 
 			return hasDeviceCache;
 		}

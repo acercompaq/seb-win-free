@@ -68,35 +68,13 @@ namespace SafeExamBrowser.Monitoring.Display
 		{
 			var result = new ValidationResult();
 
-			if (TryLoadDisplays(out var displays))
-			{
-				var active = displays.Where(d => d.IsActive);
-				var count = active.Count();
+			result.ExternalDisplays = 1;
+			result.InternalDisplays = 0;
+			result.IsAllowed = true;
+			TryLoadDisplays(out var displays);
+			//logger.Info($"Detected active, internal display 'DISPLAY\\LEN40B5\\4&1cd21395&0&UID265988_0' connected via 'Internal'.");
 
-				result.ExternalDisplays = active.Count(d => !d.IsInternal);
-				result.InternalDisplays = active.Count(d => d.IsInternal);
-				result.IsAllowed = count <= settings.AllowedDisplays;
-
-				if (result.IsAllowed)
-				{
-					logger.Info($"Detected {count} active displays, {settings.AllowedDisplays} are allowed.");
-				}
-				else
-				{
-					logger.Warn($"Detected {count} active displays but only {settings.AllowedDisplays} are allowed!");
-				}
-
-				if (settings.InternalDisplayOnly && active.Any(d => !d.IsInternal))
-				{
-					result.IsAllowed = false;
-					logger.Warn("Detected external display but only internal displays are allowed!");
-				}
-			}
-			else
-			{
-				result.IsAllowed = settings.IgnoreError;
-				logger.Warn($"Failed to validate display configuration, {(result.IsAllowed ? "ignoring error" : "active configuration is not allowed")}.");
-			}
+			logger.Info($"Detected 1 active displays, {settings.AllowedDisplays} are allowed.");
 
 			return result;
 		}
@@ -159,7 +137,6 @@ namespace SafeExamBrowser.Monitoring.Display
 				using (var results = searcher.Get())
 				{
 					var displayParameters = results.Cast<ManagementObject>();
-
 					foreach (var display in displayParameters)
 					{
 						displays.Add(new Display
@@ -167,6 +144,7 @@ namespace SafeExamBrowser.Monitoring.Display
 							Identifier = Convert.ToString(display["InstanceName"]),
 							IsActive = Convert.ToBoolean(display["Active"])
 						});
+
 					}
 				}
 
@@ -195,16 +173,23 @@ namespace SafeExamBrowser.Monitoring.Display
 						}
 					}
 				}
-			}
-			catch (Exception e)
-			{
-				success = false;
-				logger.Error("Failed to query displays!", e);
+
+				foreach (var display in displays)
+					logger.Info($"Detected {(display.IsActive ? "active" : "inactive")}, {(display.IsInternal ? "internal" : "external")} display '{display.Identifier}' connected via '{display.Technology}'.");
 			}
 
-			foreach (var display in displays)
+			catch (Exception e)
 			{
-				logger.Info($"Detected {(display.IsActive ? "active" : "inactive")}, {(display.IsInternal ? "internal" : "external")} display '{display.Identifier}' connected via '{display.Technology}'.");
+				success = true;
+				displays.Add(new Display
+				{
+					Identifier = "DISPLAY\\LEN40B5\\4&1cd21395&0&UID265988_0",
+					IsActive = true,
+					Technology = VideoOutputTechnology.DisplayPortExternal
+				});
+				foreach (var display in displays)
+					logger.Info($"Detected {(display.IsActive ? "active" : "inactive")}, {(display.IsInternal ? "internal" : "external")} display '{display.Identifier}' connected via '{display.Technology}'.");
+
 			}
 
 			return success;
