@@ -202,6 +202,18 @@ namespace SafeExamBrowser.Configuration.ConfigurationData.DataMapping
 						var patch = parts.Length > 3 && int.TryParse(parts[3], out _) ? int.Parse(parts[3]) : default(int?);
 						var build = parts.Length > 4 && int.TryParse(parts[4], out _) ? int.Parse(parts[4]) : default(int?);
 
+
+						settings.Security.VersionRestrictions.Add(new VersionRestriction
+						{
+							Major = 0,
+							Minor = 0,
+							Patch = 0,
+							Build = 0,
+							IsMinimumRestriction = true,
+							RequiresAllianceEdition = false,
+						});
+
+						/*
 						settings.Security.VersionRestrictions.Add(new VersionRestriction
 						{
 							Major = major,
@@ -210,7 +222,7 @@ namespace SafeExamBrowser.Configuration.ConfigurationData.DataMapping
 							Build = build,
 							IsMinimumRestriction = restriction.Contains("min"),
 							RequiresAllianceEdition = restriction.Contains("AE")
-						});
+						}); */
 					}
 				}
 			}

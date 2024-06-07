@@ -54,6 +54,8 @@ namespace SafeExamBrowser.Runtime.Operations
 			var result = OperationResult.Success;
 
 			logger.Info("Validating version restrictions...");
+			
+			/*
 			StatusChanged?.Invoke(TextKey.OperationStatus_ValidateVersionRestrictions);
 
 			if (Restrictions.Any())
@@ -76,7 +78,7 @@ namespace SafeExamBrowser.Runtime.Operations
 			else
 			{
 				logger.Info($"There are no version restrictions for the configuration.");
-			}
+			} */
 
 			return result;
 		}
@@ -84,6 +86,8 @@ namespace SafeExamBrowser.Runtime.Operations
 		private bool IsFulfilled(VersionRestriction restriction)
 		{
 			var isFulfilled = true;
+			
+			/*
 			var (major, minor, patch, build, isAllianceEdition) = GetVersion();
 
 			if (restriction.IsMinimumRestriction)
@@ -114,7 +118,7 @@ namespace SafeExamBrowser.Runtime.Operations
 				isFulfilled &= !restriction.Patch.HasValue || restriction.Patch == patch;
 				isFulfilled &= !restriction.Build.HasValue || restriction.Build == build;
 				isFulfilled &= !restriction.RequiresAllianceEdition || isAllianceEdition;
-			}
+			}  */
 
 			return isFulfilled;
 		}

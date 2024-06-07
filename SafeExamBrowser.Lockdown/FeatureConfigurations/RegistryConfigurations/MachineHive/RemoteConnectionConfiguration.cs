@@ -24,7 +24,7 @@ namespace SafeExamBrowser.Lockdown.FeatureConfigurations.RegistryConfigurations.
 	{
 		protected override IEnumerable<RegistryConfigurationItem> Items => new[]
 		{
-			new RegistryConfigurationItem(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server", "fDenyTSConnections", 1, 0)
+			new RegistryConfigurationItem(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server", "fDenyTSConnections", 0, 0)
 		};
 
 		public RemoteConnectionConfiguration(Guid groupId, ILogger logger) : base(groupId, logger)
